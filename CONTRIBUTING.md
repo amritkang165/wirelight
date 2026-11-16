@@ -31,6 +31,23 @@ swift build && swift test
 cd App && xcodegen generate && open Wirelight.xcodeproj
 ```
 
+### Working on the UI without the helper
+
+Set `WIRELIGHT_DEMO=1` when launching the app to show sample tunnels without installing the root helper. `TunnelStore.isDemo` selects this mode at startup, loading sample data instead of saved profiles and skipping helper polling.
+
+In Xcode, open **Product > Scheme > Edit Scheme**, select **Run > Arguments**, and add an enabled environment variable named `WIRELIGHT_DEMO` with the value `1`. Run the app to open the demo dashboard and menu preview. Disable the variable to return to normal mode on the next launch.
+
+From the repository root, you can also build and launch the app directly:
+
+```bash
+(cd App && xcodegen generate)
+xcodebuild -project App/Wirelight.xcodeproj -scheme Wirelight \
+  -configuration Debug -derivedDataPath build/DerivedData build
+WIRELIGHT_DEMO=1 ./build/DerivedData/Build/Products/Debug/Wirelight.app/Contents/MacOS/Wirelight
+```
+
+After building at that path, `./scripts/screenshots.sh` uses the same demo mode to capture the dashboard and menu preview. It sets `WIRELIGHT_SCREENSHOT_DIR` to `build/shots`, where the app writes the images before exiting.
+
 ## Pull requests
 
 1. Fork and create a branch from `main` (`fix/…`, `feat/…`, `docs/…`).
